@@ -26,7 +26,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Bird birdBottom={birdBottom} birdLeft={birdLeft}/>
+      <Bird birdBottom={birdBottom} birdLeft={birdLeft} color={"red"} />
     </View>
   );
 }
