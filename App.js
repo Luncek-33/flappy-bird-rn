@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, View, Image, TouchableWithoutFeedback } from 'react-native';
 import Bird from './src/component/Bird';
 import { useEffect, useState } from 'react';
 import Obstacles from './src/component/obstacle';
@@ -52,6 +52,7 @@ export default function App() {
     clearInterval(gameTimerId)
     clearInterval(obstacleTimerId)
     clearImmediate(obstacleTimerIdTwo)
+    setIsGameOver(true);
   }
 
 
@@ -116,7 +117,7 @@ export default function App() {
           color={'green'}
           obstacleWidth = {obstacleWidth}
           obstacleHeight = {obstacleHeight}
-          randomBottom = {obstaclesNegHeight}
+          randomBottom = {obstacleNegativeHeight}
           gap = {gap}
           obstaclesLeft = {obstaclesLeft}
         />
@@ -124,7 +125,7 @@ export default function App() {
           color={'yellow'}
           obstacleWidth = {obstacleWidth}
           obstacleHeight = {obstacleHeight}
-          randomBottom = {obstaclesNegHeightTwo}
+          randomBottom = {obstacleNegativeHeightTwo}
           gap = {gap}
           obstaclesLeft = {obstaclesLeftTwo}
         />

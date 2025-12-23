@@ -1,12 +1,12 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, View, Image } from "react-native";
 
 const Bird = ({ birdBottom,birdLeft, color }) => {
 
   const birdWidth =50;
   const birdHeight = 50;
   return(
-  <View
+  <Image
     style={{
       position: "absolute",
       backgroundColor: color,
@@ -16,7 +16,9 @@ const Bird = ({ birdBottom,birdLeft, color }) => {
       bottom: birdBottom = birdBottom - birdHeight/2,
       
     }}
-  ></View>
+    source={require("../../assets/bird1.png")}
+    resizeMode="stretch"
+  ></Image>
   );};
 
 export default Bird;
