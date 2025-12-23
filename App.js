@@ -16,7 +16,10 @@ export default function App() {
 
   const [obstacleNegativeHeight, setObstacleNegativeHeight] = useState(0);
   const [obstacleNegativeHeightTwo, setObstacleNegativeHeightTwo] = useState(0);
-  
+  const [isGameOver,setIsGameOver] = useState(false);
+  const[score, setScore] = useState(0);
+
+
 
 
   const birdLeft = screenWidth/2;
@@ -26,9 +29,30 @@ export default function App() {
   let obstacleTimerId;
   let obstacleTimerIdTwo;
   let setObstaclesTimerTwo;
-  let[score, setScore] = useState(0);
   
 
+  useEffect(() => {
+    if(
+      ((birdBottom< (obstacleHeight+obstacleNegativeHeight +30)||
+    birdBottom > (obstacleHeight + obstacleNegativeHeight + gap -30))&&
+    (obstaclesLeft > screenWidth/2 -30 && obstaclesLeft <screenWidth/2 +30))
+    ||
+      ((birdBottom< (obstacleNegativeHeightTwo + obstacleHeight +30)||
+    birdBottom > (obstacleHeight + obstacleNegativeHeightTwo + gap -30))&&
+    (obstaclesLeftTwo > screenWidth/2 -30 && obstaclesLeftTwo <screenWidth/2 +30))
+
+    )
+    {
+      console.log("Game Over")
+      gameOver()
+    }
+  })
+
+  const gameOver = () => {
+    clearInterval(gameTimerId)
+    clearInterval(obstacleTimerId)
+    clearImmediate(obstacleTimerIdTwo)
+  }
 
 
   useEffect(() => {
@@ -45,6 +69,13 @@ export default function App() {
 
     }
   }, [obstaclesLeftTwo]);
+
+  const jump = () => {
+    if (!isGameOver && (birdBottom < screenHeight)) {
+      setBirdBottom(birdBottom => birdBottom +50)
+      console.log("jumped")
+    }
+  }
 
   useEffect(() => {
     if(obstaclesLeft > -60) {
@@ -73,27 +104,33 @@ export default function App() {
   }, [birdBottom]);
 
   return (
-    <View style={styles.container}>
-      <Bird birdBottom={birdBottom} birdLeft={birdLeft} color={"red"} />
-
-      <Obstacles
-      color={"green"}
-      obstacleWidth={obstacleWidth}
-      obstacleHeight={obstacleHeight}
-      randomBottom={obstacleNegativeHeight}
-      gap={gap}
-      obstaclesLeft={obstaclesLeft}></Obstacles>
-
-      
-      <Obstacles
-      color={"yellow"}
-      obstacleWidth={obstacleWidth}
-      obstacleHeight={obstacleHeight}
-      randomBottom={obstacleNegativeHeightTwo}
-      gap={gap}
-      obstaclesLeft={obstaclesLeftTwo}></Obstacles>
-    </View>
-  );
+    <TouchableWithoutFeedback onPress={jump}>
+      <View style={styles.container}>
+      <Image source={require('./assets/background.png')} style={styles.backgroundImage} />
+        <Text style={styles.score}>Score: {score}</Text>
+        <Bird 
+          birdBottom = {birdBottom} 
+          birdLeft = {birdLeft}
+        />
+        <Obstacles 
+          color={'green'}
+          obstacleWidth = {obstacleWidth}
+          obstacleHeight = {obstacleHeight}
+          randomBottom = {obstaclesNegHeight}
+          gap = {gap}
+          obstaclesLeft = {obstaclesLeft}
+        />
+        <Obstacles 
+          color={'yellow'}
+          obstacleWidth = {obstacleWidth}
+          obstacleHeight = {obstacleHeight}
+          randomBottom = {obstaclesNegHeightTwo}
+          gap = {gap}
+          obstaclesLeft = {obstaclesLeftTwo}
+        />
+      </View>
+    </TouchableWithoutFeedback>
+  ); 
 }
 
 const styles = StyleSheet.create({
@@ -103,4 +140,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  score: {
+    fontSize: 32,
+    top: 50,
+    position: 'absolute',
+    zIndex: 1,
+    color: 'white'
+  },
+  backgroundImage: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0
+  } 
 });
